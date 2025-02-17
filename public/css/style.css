@@ -1,0 +1,391 @@
+body {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* color: black; */
+}
+
+.container {
+  flex: 1;
+  /* min-height: 80vh; */
+}
+
+/* Navbar */
+.navbar {
+  height: 4rem;
+  background-color: white;
+}
+
+.fa-compass {
+  color: #fe424d;
+  font-size: 2rem;
+}
+
+.navbar-brand {
+  color: #fe424d !important;
+  font-size: 1.5rem !important;
+}
+
+/* Footer */
+.f-info-links a {
+  text-decoration: none;
+  color: #222222;
+  margin-left: 0.5rem;
+}
+
+.f-info-links a:hover {
+  text-decoration: underline;
+  color: #222222;
+}
+
+.f-info-links,
+.f-info-socials {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.f-info-brand {
+  margin-right: 0.5rem;
+}
+
+.f-info-links {
+  margin-bottom: 0.5rem;
+}
+
+.f-info-socials i {
+  margin: 0.5rem 0.4rem 0.3rem 0.4rem;
+  font-size: 1.4rem;
+  opacity: 0.9;
+}
+
+.f-info-socials i:hover {
+  font-size: 1.5rem;
+  opacity: 1;
+}
+
+.f-info {
+  text-align: center;
+  display: flex;
+  height: 4rem;
+  background-color: #ebebeb;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: space-evenly;
+}
+
+/* Cards */
+.listing-card {
+  border: none !important;
+  margin-bottom: 2rem;
+}
+
+.card-img-top {
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover;
+  padding: 0.5rem !important;
+}
+
+.card-body {
+  padding: 0.5rem !important;
+}
+
+.card-text p {
+  font-weight: 400 !important;
+}
+
+.listing_link {
+  text-decoration: none;
+}
+
+/* Card-Effect */
+/* .card-img-overlay{
+  opacity: 0;
+} */
+/* .card-img-overlay:hover{
+  opacity: 0.2;
+  background-color: white;
+} */
+
+.card:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+  /* box-shadow: 0 2px 10px 0 rgba(26, 26, 26, 0.35); */
+  scale: 1.02;
+  border-radius: 1rem;
+}
+
+.card-title { 
+  font-size: 1rem;
+}
+
+/* New Page */
+.add-btn {
+  background-color: #fe424d !important;
+  border: none !important;
+}
+
+/* Edit Page */
+.edit-btn {
+  background-color: #fe424d !important;
+  border: none !important;
+}
+
+/* Show Image */
+.show-img {
+  height: 30vh;
+}
+
+.edsh {
+  margin-top: 0.4rem;
+  height: 150px;
+  border-radius: 7px;
+}
+
+.btns {
+  display: flex;
+}
+
+.show-card {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* MAP */
+#map {
+  height: 300px !important;
+  /* width: 85vh !important; */
+  border-radius: 0.5rem;
+  margin: 20px auto;
+}
+
+#map:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+  border-radius: 0.7rem;
+}
+
+
+/*Filter*/
+#filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scrollable-tabs-container {
+  max-width: 995px;
+  overflow: hidden;
+  position: relative;
+}
+
+.scrollable-tabs-container svg {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  pointer-events: auto;
+}
+
+.scrollable-tabs-container .filter-container {
+  display: flex;
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+.scrollable-tabs-container .filter-container.dragging {
+  scroll-behavior: auto;
+}
+
+.scrollable-tabs-container .filter-container.dragging a {
+  pointer-events: none;
+}
+
+.scrollable-tabs-container .filter-container::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollable-tabs-container .right-arrow,
+.scrollable-tabs-container .left-arrow {
+  position: absolute;
+  height: 100%;
+  width: 100px;
+  top: 0;
+  display: none;
+  align-items: center;
+  padding: 0 10px;
+  pointer-events: none;
+}
+
+.scrollable-tabs-container .right-arrow.active,
+.scrollable-tabs-container .left-arrow.active {
+  display: flex;
+}
+
+.scrollable-tabs-container .right-arrow {
+  right: 0;
+  background: linear-gradient(to left, #fff 50%, transparent);
+  justify-content: flex-end;
+}
+
+.scrollable-tabs-container .left-arrow {
+  background: linear-gradient(to right, #fff 50%, transparent);
+  z-index: 9;
+}
+
+.scrollable-tabs-container svg:hover {
+  background-color: #ddd;
+}
+
+.scrollable-tabs-container a {
+  color: black;
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.filter {
+  text-align: center;
+  margin-top: 2rem;
+  opacity: 0.65;
+  margin-left: 0.7rem;
+  margin-right: 0.7rem;
+  padding: 0 10px;
+}
+
+.filter:hover {
+  opacity: 1;
+  cursor: pointer;
+  border-bottom: 2.5px solid #000000;
+}
+
+/* .scrollable-tabs-container .filter-container a.active {
+  border-bottom: 2.5px solid #fe424d;
+  color: #fe424d;
+  opacity: 1;
+} */
+
+.filter p {
+  font-size: 0.8rem;
+}
+
+.tax-info {
+  display: none;
+}
+
+.tax-toggle {
+  border: 1px solid black;
+  border-radius: 0.7rem;
+  height: 3.25rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  width: 25%;
+}
+
+.review-card {
+  flex-direction: row;
+  align-items: center;
+}
+
+/*MEDIA QUERIES*/
+@media screen and (max-width: 576px) {
+  #listing_image {
+    width: 100%;
+    height: auto;
+  }
+
+  #listing_image img {
+    height: 100%;
+    width: 100%;
+  }
+
+  #map {
+    height: 300px !important;
+    width: auto !important;
+    margin: 10px;
+  }
+
+  .tittle h3 {
+    padding-left: 5px;
+  }
+
+  .scrollable-tabs-container .right-arrow,
+  .scrollable-tabs-container .left-arrow {
+    width: 70px;
+  }
+
+  /* Hide the search text */
+  .search-btn p {
+    display: none;
+  }
+
+  .navbar-nav .search-btn {
+    padding: 6px 12px;
+    border-radius: 50%;
+  }
+
+  /* Center the search icon in a circle */
+  .navbar-nav .search-btn i {
+    margin-right: 0; /* Adjust padding as needed */
+  }
+
+  .navbar-nav {
+    width: 185px;
+  }
+
+  .navbar-nav input {
+    padding: 0.5rem 10px;
+    text-align: center;
+  }
+
+  .del {
+    margin-left: 10px !important;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .review-card {
+    width: 65%;
+  }
+
+  #map {
+    width: 125% !important;
+    height: 400px !important;
+  }
+
+  .del {
+    margin-left: 73px !important;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  #filters {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .scrollable-tabs-container {
+    max-width: 100%;
+  }
+
+  #map {
+    height: 500px;
+    width: 500px;
+  }
+
+  .del {
+    margin-left: 73px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .del {
+    margin-left: 35px;
+  }
+}

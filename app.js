@@ -109,6 +109,11 @@ passport.deserializeUser(User.deserializeUser());
 //   res.send("Root..!!");
 // });
 
+app.get('/', (req, res) => {
+  // Redirect to new page
+  res.redirect('/listings');
+});
+
 app.use((req,res,next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");

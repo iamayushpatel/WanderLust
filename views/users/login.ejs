@@ -1,12 +1,24 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
+<style>
+  @media (max-width: 430px) {
+    .offset-3 {
+      margin-left: 16.66666667%;
+    }
+    .col-6 {
+      flex: 0 0 auto;
+      width: 66.66666667%;
+    }
+  }
+</style>
+
 <div class="row mt-3">
-  <h1 class="col-6 offset-3">Login to WanderLust</h1>
-  <br /><br /><br />
+  <h3 class="col-6 offset-3">Login to WanderLust</h3>
+  <br />
   <div class="col-6 offset-3">
     <form action="/login" method="POST" class="needs-validation" novalidate>
       <div class="mb-3">
-        <lable for="username" class="form-label">Username</lable>
+        <lable for="username" class="form-label"><b>Username</b></lable>
         <input
           type="text"
           name="username"
@@ -17,7 +29,7 @@
         />
       </div>
       <div class="mb-3">
-        <lable for="password" class="form-label">Password</lable>
+        <lable for="password" class="form-label"><b>Password</b></lable>
         <input
           type="password"
           name="password"
@@ -29,5 +41,19 @@
       </div>
       <button class="btn add-btn btn-dark">Login</button>
     </form>
+    <div style="margin-top: 10px" id="account">
+      <p>
+        <b>Don't have an account?</b>&nbsp;&nbsp;&nbsp;<a href="/signup"
+          ><b>SignUp</b></a
+        >
+      </p>
+    </div>
+    <div class="googleoauth">
+      <button>
+        <a href="/auth/google"
+          ><img src="./icon/google-login.jpg" /> &nbsp;Login with Google</a
+        >
+      </button>
+    </div>
   </div>
 </div>

@@ -9,7 +9,7 @@ module.exports.isLoggedIn = (req, res, next) => {
     req.session.redirectUrl = req.originalUrl; // Redirect URL
     req.flash(
       "error",
-      "You are not logged in , Please login to access listing"
+      "You are not logged in, Please login to access listing!"
     );
     return res.redirect("/login");
   }
@@ -25,13 +25,13 @@ module.exports.saveRedirectUrl = (req, res, next) => {
 
 module.exports.isOwner = async (req, res, next) => {
   try {
-  let { id } = req.params;
-  let listing = await Listing.findById(id);
-  if (!listing.owner._id.equals(res.locals.currUser._id)) {
-    req.flash("error", "You are not the owner of this listing!");
-    return res.redirect(`/listings/${id}`);
-  }
-  next();
+    let { id } = req.params;
+    let listing = await Listing.findById(id);
+    if (!listing.owner._id.equals(res.locals.currUser._id)) {
+      req.flash("error", "You are not the owner of this listing!");
+      return res.redirect(`/listings/${id}`);
+    }
+    next();
   } catch (error) {
     const errorMessage = "Page not exists anymore";
     const err = new ExpressError(400, errorMessage);

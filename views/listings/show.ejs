@@ -1,5 +1,21 @@
 <% layout("/layouts/boilerplate") %>
 
+<style>
+  @media (max-width: 550px) {
+    .offset-3 {
+      margin-left: 16.66666667%;
+      width: 5rem;
+    }
+    .col-6 {
+      flex: 0 0 auto;
+      width: 66.66666667%;
+    }
+    #booking-btn {
+      width: 36%;
+    }
+  }
+</style>
+
 <script>
   const listing = <%- JSON.stringify(listing) %>;
 </script>
@@ -38,6 +54,131 @@
     </form>
   </div>
   <% } %>
+
+  <!-- Payment Gateway -->
+  <div>
+    <% if(currUser && !listing.owner._id.equals(currUser._id)) { %>
+    <form class="pay-form">
+      <input type="hidden" name="name" value="<%= listing.title %>" />
+      <input type="hidden" name="amount" value="<%= listing.price %>" />
+      <input
+        type="hidden"
+        name="description"
+        value="<%= listing.description %>"
+      />
+      <button id="booking-btn" class="btn btn-dark mx-auto">Book Now!</button>
+    </form>
+    <% } %>
+  </div>
+
+  <!-- Razorpay Script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    document
+      .getElementById("booking-btn")
+      .addEventListener("click", async function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+        sessionStorage.setItem("razorpayTriggered", "true"); // Mark Razorpay as triggered
+
+        const listingId = "<%= listing._id %>";
+        const name = "<%= listing.title %>";
+        const amount = "<%= listing.price %>";
+        const description = "<%= listing.description %>";
+
+        console.log("Sending data to backend:", {
+          listingId,
+          name,
+          amount,
+          description,
+        });
+
+        try {
+          const response = await fetch("/createOrder", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ listingId, name, amount, description }),
+          });
+
+          const orderData = await response.json();
+          console.log("Received order response:", orderData);
+
+          if (!orderData.success) {
+            alert("Error creating order. Please try again.");
+            return;
+          }
+
+          const options = {
+            key: orderData.key_id,
+            amount: orderData.amount,
+            currency: "INR",
+            name: orderData.product_name,
+            description: orderData.description,
+            order_id: orderData.order_id,
+            handler: function (response) {
+              alert(
+                "Payment Successful! Payment ID: " +
+                  response.razorpay_payment_id
+              );
+              sessionStorage.removeItem("razorpayTriggered"); // Remove flag after success
+              window.location.href = "/payment-success";
+            },
+            prefill: {
+              name: orderData.name,
+              email: orderData.email,
+              contact: orderData.contact,
+            },
+            theme: { color: "#3399cc" },
+          };
+
+          console.log("Opening Razorpay with options:", options);
+          const rzp = new Razorpay(options);
+
+          rzp.on("payment.failed", function (response) {
+            console.error("Payment failed:", response.error);
+            alert("Payment failed. Try again.");
+            sessionStorage.removeItem("razorpayTriggered"); // Remove flag on failure
+          });
+
+          rzp.open();
+        } catch (error) {
+          console.error("Error in booking:", error);
+          alert("An error occurred. Please try again.");
+          sessionStorage.removeItem("razorpayTriggered"); // Remove flag on error
+        }
+      });
+
+    // Fix: Completely Prevent Razorpay from Reopening on Back Button
+    window.onload = function () {
+      if (sessionStorage.getItem("razorpayTriggered") === "true") {
+        console.log(
+          "Back button detected, preventing Razorpay from reopening..."
+        );
+        sessionStorage.removeItem("razorpayTriggered");
+        history.replaceState(null, "", location.href); // Modify history to prevent back trigger
+      }
+    };
+
+    // Fix: Force Reload on Back Button to Reset Page State
+    window.addEventListener("popstate", function () {
+      console.log("Back button pressed, reloading page to reset state...");
+      sessionStorage.removeItem("razorpayTriggered");
+      location.reload(); // Fully reload the page to prevent Razorpay from reopening
+    });
+  </script>
+
+  <!-- Offers --->
+  <div class="col-8 offset-2 mb-3 mt-3">
+    <hr />
+    <h4>What this place offers !</h4>
+    <div class="offers">
+      <span><i class="fa-solid fa-kitchen-set"></i> Kitchen</span>
+      <span><i class="fa-solid fa-square-parking"></i> Parking</span>
+      <span><i class="fa-solid fa-fan"></i> Air Conditioning</span>
+      <span><i class="fa-solid fa-video"></i> Security Camera</span>
+      <span><i class="fa-solid fa-tv"></i> TV</span>
+      <span><i class="fa-solid fa-wifi"></i> Wifi</span>
+    </div>
+  </div>
 
   <!-- Add Rating -->
   <div class="col-8 offset-2 mb-3">
@@ -120,7 +261,7 @@
     <% } %> <% if(listing.reviews.length > 0 ) { %>
     <hr />
     <div class="row">
-      <p><b> All Reviews </b></p>
+      <h4>All Reviews</h4>
       <% for(review of listing.reviews) { %>
       <div class="card review-card col-5 ms-4 mb-3">
         <div class="card-body">
@@ -145,7 +286,8 @@
     <hr />
   </div>
 
-  <div class="col-6 offset-3 mb-3">
+  <!-- map -->
+  <div class="col-8 offset-2">
     <h3>Where you'll be!</h3>
     <!-- This is where the map will be displayed -->
     <div id="map"></div>
@@ -153,5 +295,32 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
   </div>
+
+  <!-- hosted start -->
+  <div class="col-8 offset-2 mb-3" id="hosted">
+    <hr />
+    <div class="hosted"><i class="fa-solid fa-user"></i></div>
+    <div class="hosted-details">
+      <p>Username : <%= listing.owner.username %></p>
+      <p>Email : <%= listing.owner.email %></p>
+      <div id="response-rt">
+        <p>Response rate : 100%</p>
+        <p style="margin-top: -14px">Response time : within an hour</p>
+      </div>
+      <span
+        ><i class="fa-solid fa-square-check"></i>Identity Verified
+        <i class="fa-solid fa-fire"></i>Superhost</span
+      >
+
+      <div class="services-offer">
+        <form method="POST" action="https://mail.google.com/mail/">
+          <button id="offers" class="btn btn-outline-dark mx-auto">
+            Contact Host
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script src="/js/map.js"></script>
 </div>

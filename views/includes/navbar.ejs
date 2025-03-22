@@ -1,6 +1,6 @@
 <style>
   .search-btn {
-    background-color: #fe424d;
+    background-color: #00b3fe;
     color: #fff;
     border-radius: 25px;
     padding: 0 1rem 0 1rem;
@@ -9,12 +9,8 @@
     justify-content: center;
   }
 
-  .search-btn p {
-    margin: 0;
-  }
-
   .search-btn:hover {
-    background-color: #fe424d;
+    background-color: #00b3fe;
     color: #fff;
   }
 
@@ -25,95 +21,137 @@
 
   .search-inp {
     border-radius: 25px;
-    padding: 0.5rem 3rem 0.5rem 3rem;
-    font-size: 1rem;
+    padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+    font-size: 0.9rem;
     text-align: center;
+    width: 300px;
   }
 
-  /* Hamburger menu */
-  /* .checkboxtoggler {
-    width: 2.5em;
-    display: flex;
-    flex-direction: column;
-    gap: 0.7em;
-    cursor: pointer;
-  }
-
-  .line-1 {
-    background: #df6447;
-    height: 0.3em;
-    border-radius: 10em;
-    transition-duration: 500ms;
-  }
-
-  .line-2 {
-    background: #df6447;
-    height: 0.3em;
-    border-radius: 10em;
-    transition-duration: 500ms;
-  }
-
-  .line-3 {
-    background: #df6447;
-    height: 0.3em;
-    border-radius: 10em;
-    transition-duration: 500ms;
-  }
-
-  #toggleChecker {
-    height: 3em;
-    width: 100%;
+  #responsive-registration {
     display: none;
   }
 
-  #toggleChecker:checked + #togglerLable .checkboxtoggler .line-1 {
-    -webkit-transform: rotate(45deg) translateY(0.7em) translateX(0.7em);
-    -ms-transform: rotate(45deg) translateY(0.7em) translateX(0.7em);
-    transform: rotate(45deg) translateY(0.7em) translateX(0.7em);
-  }
-
-  #toggleChecker:checked + #togglerLable .checkboxtoggler .line-2 {
-    -webkit-transform: rotate(-45deg) translateY(0em) translateX(0.1em);
-    -ms-transform: rotate(-45deg) translateY(0em) translateX(0.1em);
-    transform: rotate(-45deg) translateY(0em) translateX(0.1em);
-  }
-
-  #toggleChecker:checked + #togglerLable .checkboxtoggler .line-3 {
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-
-  .nav-profile {
-    position: absolute;
+  .dropdown {
+    margin-left: auto !important;
+    width: 280px;
     display: flex;
-    flex-direction: column !important;
-    justify-content: center;
-    top: 3rem;
-    right: 1.2rem;
-    align-items: center !important;
-    min-height: 8rem;
-    min-width: 10rem;
-    padding: 1.5rem;
-    background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.201);
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
-    gap: 0.5rem;
-    /* display: none; */
-    /* opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    justify-content: end;
   }
 
-  .nav-profile a:hover {
-    color: #fe424d;
-  } */
+  .dropdown p {
+    display: inline;
+  }
 
+  .dropdown button {
+    width: auto !important;
+    height: 3rem;
+    border-radius: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dropdown-menu {
+    margin-top: 0.5rem !important;
+    width: 12rem;
+    padding: 0.5rem;
+    transform: translateX(45%);
+  }
+
+  .fa-circle-user {
+    font-size: 1.5rem;
+  }
+
+  /* Flexbox Layout for Navbar */
+  .navbar-collapse {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* Centering Search bar */
+  .nav-search {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    /* max-width: 760px; */
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 767px) {
+    .dropdown {
+      display: none;
+    }
+
+    .navbar-collapse {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .nav-search {
+      width: 80%;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1rem;
+      margin-bottom: -0.5rem;
+    }
+
+    .search-inp {
+      border-radius: 25px;
+      padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+      font-size: 0.85rem;
+      text-align: center;
+      width: 250px;
+    }
+
+    #responsive-registration {
+      display: inline;
+      margin: 1rem;
+    }
+
+    .navbar-nav {
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .container-fluid {
+      background-color: white;
+    }
+  }
+
+  @media (max-width: 1033px) and (min-width: 767px) {
+    .nav-search {
+      display: flex;
+      justify-content: center;
+      flex-grow: 1;
+      max-width: 473px;
+    }
+
+    .dropdown {
+      margin-left: auto !important;
+      display: flex;
+      justify-content: end;
+      width: auto;
+    }
+
+    .dropdown-menu {
+      margin-top: 0.5rem !important;
+      width: 12rem;
+      padding: 0.5rem;
+      transform: translateX(-65%);
+    }
+  }
 </style>
 
-<nav class="navbar navbar-expand-md border-bottom sticky-top">
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass">&nbsp;&nbsp;</i>WanderLust</a>
+    <a class="navbar-brand" href="/listings">
+      <img src="/icon/Logo.jpg" alt="wanderlust" class="logoimg" />
+      <img src="/icon/Name.jpg" alt="wanderlust" class="nameimg" />
+    </a>
     <button
       class="navbar-toggler"
       type="button"
@@ -125,48 +163,111 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    
 
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
-      </div>
-      <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search" action="/listings/search" method="get">
+      <!-- <div class="navbar-nav">
+        <a class="nav-link" href="/listings"><b>Explore</b></a>
+      </div> -->
+      <div class="nav-search nav-hover-search">
+        <form
+          class="d-flex"
+          role="search"
+          action="/listings/search"
+          method="get"
+          id="searchBox"
+        >
           <input
             class="form-control me-2 search-inp"
             type="search"
-            placeholder="Search"
+            placeholder="Location   |   Title   |   Price"
+            aria-label="Search"
             name="q"
+            id="mySearchInput"
           />
-          <button class="btn search-btn" type="submit">
+          <button class="btn search-btn" type="submit" id="search">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <p>Search</p>
+            Search
           </button>
         </form>
       </div>
-<!-- 
-      <input id="toggleChecker" type="checkbox" />
-    <label id="togglerLable" for="toggleChecker">
-      <div class="checkboxtoggler">
-        <div class="line-1"></div>
-        <div class="line-2"></div>
-        <div class="line-3"></div>
-      </div>
-    </label> -->
 
-      
-      <div class="navbar-nav ms-auto">
-         <!-- ms-auto : move options to right side -->
-        <!-- <a class="nav-link" href="/listings/new">Add Your Home</a> -->
-        <a class="nav-link" href="/listings/new">Add New Listings</a>
-        <% if (!currUser) { %>
-          <a class="nav-link "  href="/signup"><b>SignUp</b></a>
-          <a class="nav-link" href="/login"><b>Login</b></a>
-        <%} %>
-        <% if (currUser) { %>
-        <a class="nav-link" href="/logout"><b>Log Out</b></a>
-        <%} %>
+      <div class="navbar-nav">
+        <div class="dropdown">
+          <button
+            class="btn btn-dark dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fa-solid fa-circle-user"></i>&nbsp;&nbsp;
+          </button>
+          <ul class="dropdown-menu">
+            <% if(!currUser) { %>
+            <a class="nav-link" href="/signup"
+              ><i class="fa-solid fa-user-plus"></i>&nbsp;&nbsp;&nbsp;<b
+                >SignUp</b
+              ></a
+            >
+            <a class="nav-link" href="/login"
+              ><b
+                ><i class="fa-solid fa-user-check"></i
+                >&nbsp;&nbsp;&nbsp;Login</b
+              ></a
+            >
+            <% } %> <% if(currUser) { %>
+            <h6 class="mt-1 nav-link">
+              <b
+                ><i class="fa-solid fa-user"></i>
+                &nbsp; &nbsp;<%= currUser.username%>
+              </b>
+            </h6>
+            <a class="nav-link" href="/logout"
+              ><b
+                ><i class="fa-solid fa-arrow-right-from-bracket"></i
+                >&nbsp;&nbsp;&nbsp;Log Out</b
+              ></a
+            >
+            <% } %>
+            <hr style="margin: 0.5rem 0" />
+            <a class="nav-link" href="/listings/new"
+              ><strong
+                ><i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;&nbsp;Add
+                New Home</strong
+              ></a
+            >
+          </ul>
+        </div>
+
+        <div id="responsive-registration">
+          <% if(!currUser) { %>
+          <a class="nav-link" href="/signup"
+            ><i class="fa-solid fa-user-plus"></i>&nbsp;&nbsp;&nbsp;<b
+              >SignUp</b
+            ></a
+          >
+          <a class="nav-link" href="/login"
+            ><i class="fa-solid fa-user-check"></i>&nbsp;&nbsp;&nbsp;<b
+              >Login</b
+            ></a
+          >
+          <% } %> <% if(currUser) { %>
+          <h6 class="mt-1 nav-link">
+            <b
+              ><i class="fa-solid fa-user"></i>
+              &nbsp; &nbsp;<%= currUser.username%>
+            </b>
+          </h6>
+          <a class="nav-link" href="/logout"
+            ><i class="fa-solid fa-arrow-right-from-bracket"></i
+            >&nbsp;&nbsp;&nbsp;<b>Log Out</b></a
+          >
+          <% } %>
+          <a class="nav-link" href="/listings/new"
+            ><i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;&nbsp;<strong
+              >Add New Home</strong
+            ></a
+          >
+        </div>
       </div>
     </div>
   </div>

@@ -1,27 +1,72 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
-<div class="row mt-3">
-    <h1 class="col-6 offset-3">Sign Up on WanderLust</h1><br><br><br>
-    <div class="col-6 offset-3" >
-        <form action="/signup" method="POST" class="needs-validation" novalidate>
-            <div class="mb-3">
-                <lable for="username" class="form-label">Username</lable>
-                <input type="text" name="username" id="username" class="form-control" required placeholder="Enter username">
-                <div class="valid-feedback">Looks good!</div>
+<style>
+  @media (max-width: 430px) {
+    .offset-3 {
+      margin-left: 16.66666667%;
+    }
+    .col-6 {
+      flex: 0 0 auto;
+      width: 66.66666667%;
+    }
+  }
+</style>
 
-            </div>
-            <div class="mb-3">
-                <lable for="email" class="form-label">E-mail</lable>
-                <input type="email" name="email" id="email" class="form-control" required placeholder="Enter email">
-                
-            </div>
-            <div class="mb-3">
-                <lable for="password" class="form-label">Password</lable>
-                <input type="password" name="password" id="pass" class="form-control" required placeholder="Enter password">
-                <div class="valid-feedback">Looks strongs!</div>
-            </div>
-            <button class="btn add-btn btn-dark">SignUp</button>
-        </form>
-        
+<div class="row mt-3">
+  <h3 class="col-6 offset-3">SignUp on WanderLust</h3>
+  <br />
+  <div class="col-6 offset-3">
+    <form action="/signup" method="POST" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <lable for="username" class="form-label"><b>Username</b></lable>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          class="form-control"
+          required
+          placeholder="Enter username"
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <div class="mb-3">
+        <lable for="email" class="form-label"><b>E-mail</b></lable>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          class="form-control"
+          required
+          placeholder="Enter email"
+        />
+      </div>
+      <div class="mb-3">
+        <lable for="password" class="form-label"><b>Password</b></lable>
+        <input
+          type="password"
+          name="password"
+          id="pass"
+          class="form-control"
+          required
+          placeholder="Enter password"
+        />
+        <div class="valid-feedback">Looks strongs!</div>
+      </div>
+      <button class="btn add-btn btn-dark">SignUp</button>
+    </form>
+    <div style="margin-top: 10px" id="account">
+      <p>
+        <b>Already have an account?</b>&nbsp;&nbsp;&nbsp;<a href="/login"
+          ><b>Login</b></a
+        >
+      </p>
     </div>
+    <div class="googleoauth">
+      <button>
+        <a href="/auth/google"
+          ><img src="/icon/google-login.jpg" /> &nbsp;SignUp with Google</a
+        >
+      </button>
+    </div>
+  </div>
 </div>

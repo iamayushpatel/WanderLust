@@ -3,12 +3,10 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  /* color: black; */
 }
 
 .container {
   flex: 1;
-  /* min-height: 80vh; */
 }
 
 /* Navbar */
@@ -17,14 +15,20 @@ body {
   background-color: white;
 }
 
-.fa-compass {
-  color: #fe424d;
-  font-size: 2rem;
+.navbar-brand {
+  color: #00b3fe !important;
+  font-size: 1.5rem !important;
 }
 
-.navbar-brand {
-  color: #fe424d !important;
-  font-size: 1.5rem !important;
+.logoimg {
+  height: 40px;
+  border: none;
+  margin-left: 7px;
+}
+
+.nameimg {
+  height: 40px;
+  border: none;
 }
 
 /* Footer */
@@ -79,7 +83,12 @@ body {
 /* Cards */
 .listing-card {
   border: none !important;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  text-decoration: none;
+}
+
+.listing-index-img {
+  height: 15rem !important;
 }
 
 .card-img-top {
@@ -97,19 +106,11 @@ body {
   font-weight: 400 !important;
 }
 
-.listing_link {
+.listing-link {
   text-decoration: none;
 }
 
 /* Card-Effect */
-/* .card-img-overlay{
-  opacity: 0;
-} */
-/* .card-img-overlay:hover{
-  opacity: 0.2;
-  background-color: white;
-} */
-
 .card:hover {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
   /* box-shadow: 0 2px 10px 0 rgba(26, 26, 26, 0.35); */
@@ -117,19 +118,14 @@ body {
   border-radius: 1rem;
 }
 
-.card-title { 
+.card-text {
   font-size: 1rem;
 }
 
 /* New Page */
-.add-btn {
-  background-color: #fe424d !important;
-  border: none !important;
-}
-
-/* Edit Page */
+.add-btn,
 .edit-btn {
-  background-color: #fe424d !important;
+  background-color: #00b3fe !important;
   border: none !important;
 }
 
@@ -153,6 +149,14 @@ body {
   padding-right: 0;
 }
 
+#booking-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 26%;
+}
+
 /* MAP */
 #map {
   height: 300px !important;
@@ -165,7 +169,6 @@ body {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
   border-radius: 0.7rem;
 }
-
 
 /*Filter*/
 #filters {
@@ -250,7 +253,7 @@ body {
 
 .filter {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 1.3rem;
   opacity: 0.65;
   margin-left: 0.7rem;
   margin-right: 0.7rem;
@@ -263,12 +266,6 @@ body {
   border-bottom: 2.5px solid #000000;
 }
 
-/* .scrollable-tabs-container .filter-container a.active {
-  border-bottom: 2.5px solid #fe424d;
-  color: #fe424d;
-  opacity: 1;
-} */
-
 .filter p {
   font-size: 0.8rem;
 }
@@ -277,6 +274,7 @@ body {
   display: none;
 }
 
+/* Display Total After GST Button */
 .tax-toggle {
   border: 1px solid black;
   border-radius: 0.7rem;
@@ -286,6 +284,17 @@ body {
   align-items: center;
   font-size: 0.9rem;
   width: 25%;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-width: 993px) {
+  .tax-toggle {
+    width: 60%;
+    font-size: 0.85rem;
+    height: auto;
+    padding: 0.7rem;
+  }
 }
 
 .review-card {
@@ -293,74 +302,124 @@ body {
   align-items: center;
 }
 
-/*MEDIA QUERIES*/
-@media screen and (max-width: 576px) {
-  #listing_image {
-    width: 100%;
-    height: auto;
-  }
-
-  #listing_image img {
-    height: 100%;
-    width: 100%;
-  }
-
-  #map {
-    height: 300px !important;
-    width: auto !important;
-    margin: 10px;
-  }
-
-  .tittle h3 {
-    padding-left: 5px;
-  }
-
-  .scrollable-tabs-container .right-arrow,
-  .scrollable-tabs-container .left-arrow {
-    width: 70px;
-  }
-
-  /* Hide the search text */
-  .search-btn p {
-    display: none;
-  }
-
-  .navbar-nav .search-btn {
-    padding: 6px 12px;
-    border-radius: 50%;
-  }
-
-  /* Center the search icon in a circle */
-  .navbar-nav .search-btn i {
-    margin-right: 0; /* Adjust padding as needed */
-  }
-
-  .navbar-nav {
-    width: 185px;
-  }
-
-  .navbar-nav input {
-    padding: 0.5rem 10px;
-    text-align: center;
-  }
-
-  .del {
-    margin-left: 10px !important;
-  }
+/* login */
+.googleoauth button {
+  border-radius: 6px;
+  padding: 5px 0px;
+  width: 100%;
+  background-color: white;
 }
 
+.googleoauth a {
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  align-items: center;
+}
+
+.googleoauth img {
+  width: 40px;
+  height: 40px;
+  border: none;
+}
+
+/* What this place Offer (show.ejs)  */
+.offers {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.offers i {
+  font-size: 1.3rem;
+  height: 25px;
+  width: 25px;
+  margin-right: 10px;
+}
+
+.services-offer button {
+  height: 50px;
+  width: 240px;
+  padding: 10px 10px;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+/* Hosted by (show.ejs) */
+#hosted {
+  padding: 30px;
+}
+
+.hosted {
+  display: flex;
+  justify-content: center;
+}
+
+.hosted i {
+  font-size: 1.7rem;
+  color: white;
+  background-color: #00b3fe;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hosted p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.hosted-details p {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.hosted-details span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+#host-description {
+  padding: 0px 50px;
+  display: flex;
+  justify-content: center;
+  font-size: 17px;
+}
+
+#response-rt p {
+  color: slategrey;
+  margin: 20px;
+  font-size: 16px;
+}
+
+.hosted-details button {
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+}
+
+/*MEDIA QUERIES*/
 @media screen and (min-width: 576px) and (max-width: 767px) {
   .review-card {
     width: 65%;
   }
 
+  /* margin: 20px auto; */
   #map {
-    width: 125% !important;
-    height: 400px !important;
-  }
-
-  .del {
-    margin-left: 73px !important;
+    width: 95% !important;
+    height: 270px !important;
   }
 }
 
@@ -373,19 +432,54 @@ body {
   .scrollable-tabs-container {
     max-width: 100%;
   }
+}
 
+@media screen and (min-width: 425px) and (max-width: 577px) {
   #map {
-    height: 500px;
-    width: 500px;
+    width: 95% !important;
+    height: 160px !important;
   }
 
-  .del {
-    margin-left: 73px;
+  .hosted-details p {
+    font-size: 0.79rem;
+    margin: 0px;
+  }
+
+  .hosted i {
+    margin-bottom: 10px;
+  }
+
+  #response-rt p {
+    margin: 10px;
+    font-size: 0.8rem;
+  }
+
+  .hosted-details span {
+    font-size: 0.8rem;
   }
 }
 
-@media screen and (min-width: 992px) {
-  .del {
-    margin-left: 35px;
+@media (max-width: 430px) {
+  #map {
+    width: 95% !important;
+    height: 160px !important;
+  }
+
+  .hosted-details p {
+    font-size: 0.79rem;
+    margin: 0px;
+  }
+
+  .hosted i {
+    margin-bottom: 10px;
+  }
+
+  #response-rt p {
+    margin: 10px;
+    font-size: 0.8rem;
+  }
+
+  .hosted-details span {
+    font-size: 0.8rem;
   }
 }

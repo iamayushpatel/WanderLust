@@ -339,17 +339,14 @@ body {
 }
 
 .services-offer button {
-  height: 50px;
-  width: 240px;
+  /* height: 50px;
+  width: 240px; */
   padding: 10px 10px;
   font-weight: bold;
   border-radius: 10px;
 }
 
 /* Hosted by (show.ejs) */
-#hosted {
-  padding: 30px;
-}
 
 .hosted {
   display: flex;

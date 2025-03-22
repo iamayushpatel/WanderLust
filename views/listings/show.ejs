@@ -14,6 +14,33 @@
       width: 36%;
     }
   }
+
+  .offset-1 {
+    margin-left: 5.433333%;
+  }
+
+  @media (max-width: 600px) {
+    .col-5 {
+      flex: 0 0 auto;
+      width: 95%;
+    }
+    .offset-1 {
+      margin-left: 2.533333%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .review-card {
+      font-size: 0.9rem; /* Adjust font size for mobile */
+    }
+    .card-title {
+      font-size: 1rem; /* Smaller title font size */
+    }
+    .card-text {
+      font-size: 0.8rem; /* Smaller text font size */
+    }
+  }
+  
 </style>
 
 <script>
@@ -57,7 +84,9 @@
 
   <!-- Payment Gateway -->
   <div>
-    <% if(currUser && !listing.owner._id.equals(currUser._id)) { %>
+    <% if(currUser && listing.owner._id.equals(currUser ._id)) { %>
+    <!-- Do not display the button for the listing owner -->
+    <% } else { %>
     <form class="pay-form">
       <input type="hidden" name="name" value="<%= listing.title %>" />
       <input type="hidden" name="amount" value="<%= listing.price %>" />
@@ -66,7 +95,7 @@
         name="description"
         value="<%= listing.description %>"
       />
-      <button id="booking-btn" class="btn btn-dark mx-auto">Book Now!</button>
+      <button id="booking-btn" class="btn btn-dark mx-auto">Book Now !</button>
     </form>
     <% } %>
   </div>
@@ -78,6 +107,16 @@
       .getElementById("booking-btn")
       .addEventListener("click", async function (event) {
         event.preventDefault(); // Prevent default form submission behavior
+
+        // Check if the user is logged in
+        const isLoggedIn = <%= currUser  ? 'true' : 'false' %>;
+
+        if (!isLoggedIn) {
+          // Redirect to the login page if the user is not logged in
+          window.location.href = "/login"; // Change this to your actual login route
+          return;
+        }
+
         sessionStorage.setItem("razorpayTriggered", "true"); // Mark Razorpay as triggered
 
         const listingId = "<%= listing._id %>";
@@ -165,7 +204,6 @@
       location.reload(); // Fully reload the page to prevent Razorpay from reopening
     });
   </script>
-
   <!-- Offers --->
   <div class="col-8 offset-2 mb-3 mt-3">
     <hr />
@@ -263,7 +301,7 @@
     <div class="row">
       <h4>All Reviews</h4>
       <% for(review of listing.reviews) { %>
-      <div class="card review-card col-5 ms-4 mb-3">
+      <div class="card review-card col-5 offset-1 mb-3">
         <div class="card-body">
           <h5 class="card-title"><b>@<%= review.author.username %></b></h5>
           <p

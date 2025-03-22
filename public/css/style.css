@@ -149,7 +149,7 @@ body {
   padding-right: 0;
 }
 
-#booking-btn {
+#booking-btn, .booking-bt {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -347,7 +347,6 @@ body {
 }
 
 /* Hosted by (show.ejs) */
-
 .hosted {
   display: flex;
   justify-content: center;

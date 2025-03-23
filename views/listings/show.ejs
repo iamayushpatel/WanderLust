@@ -40,7 +40,28 @@
       font-size: 0.8rem; /* Smaller text font size */
     }
   }
-  
+
+  /* Mobile responsiveness */
+  @media (max-width: 430px) {
+    .offers {
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5px;
+    }
+    .h4min {
+      font-size: 1.2rem;
+    }
+  }
+
+  .tittle {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
 </style>
 
 <script>
@@ -74,7 +95,8 @@
     <a
       href="/listings/<%= listing._id %>/edit"
       class="btn btn-dark col-1 offset-3 edit-btn"
-      >Edit</a>
+      >Edit</a
+    >
     <form action="/listings/<%= listing._id %>?_method=DELETE " method="POST">
       <button class="btn btn-dark offset-5">Delete</button>
     </form>
@@ -206,7 +228,7 @@
   <!-- Offers --->
   <div class="col-8 offset-2 mb-3 mt-3">
     <hr />
-    <h4>What this place offers !</h4>
+    <h4 class="h4min">What this place offers !</h4>
     <div class="offers">
       <span><i class="fa-solid fa-kitchen-set"></i> Kitchen</span>
       <span><i class="fa-solid fa-square-parking"></i> Parking</span>
@@ -221,7 +243,7 @@
   <div class="col-8 offset-2 mb-3">
     <% if(currUser) {%>
     <hr />
-    <h4>Please rate us!</h4>
+    <h4 class="h4min">Please rate us!</h4>
     <form
       action="/listings/<%= listing.id %>/reviews"
       method="POST"
@@ -298,7 +320,7 @@
     <% } %> <% if(listing.reviews.length > 0 ) { %>
     <hr />
     <div class="row">
-      <h4>All Reviews</h4>
+      <h4 class="h4min">All Reviews</h4>
       <% for(review of listing.reviews) { %>
       <div class="card review-card col-5 offset-1 mb-3">
         <div class="card-body">
@@ -325,7 +347,7 @@
   <!-- map -->
   <div class="col-8 offset-2">
     <hr />
-    <h3>Where you'll be!</h3>
+    <h4 class="h4min">Where you'll be!</h4>
     <!-- This is where the map will be displayed -->
     <div id="map"></div>
     <!-- Include Leaflet JS -->

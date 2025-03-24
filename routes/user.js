@@ -5,59 +5,6 @@ const passport = require("passport");
 const { saveRedirectUrl } = require("../middleware.js");
 
 const userController = require("../controllers/users.js");
-const User = require("../models/user.js");
-const { verifyOTP } = require("../controllers/otpService"); // Import OTP Verification
-
-router.post(
-  "/signup",
-  wrapAsync(async (req, res, next) => {
-    try {
-      let { username, email, password, otp } = req.body;
-
-      // Verify OTP
-      const otpResult = verifyOTP(email, otp);
-      if (!otpResult.success) {
-        return res.json({ success: false, message: "Invalid OTP! Try again." });
-      }
-
-      console.log("OTP Verified. Proceeding with signUp");
-
-      // Check if the user already exists
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        return res.json({ success: false, message: "Email already in use!" });
-      }
-
-      // Register the user in MongoDB
-      const newUser = new User({ username, email });
-      const registeredUser = await User.register(newUser, password);
-      console.log("User Registered:", registeredUser);
-
-      // Auto-login the user after signup
-      req.login(registeredUser, (err) => {
-        if (err) return next(err);
-
-        console.log("User logged in. Redirecting...");
-        res.json({
-          success: true,
-          message: "SignUp successful!",
-          redirectUrl: "/listings",
-        });
-      });
-    } catch (e) {
-      console.error("Error in SignUp:", e);
-      res.json({ success: false, message: e.message });
-    }
-  })
-);
-
-router.get("/logout", (req, res) => {
-  req.logout((err) => {
-    if (err) return next(err);
-    req.flash("success", "Logged out successfully!");
-    res.redirect("/listings");
-  });
-});
 
 router
   .route("/signup")
@@ -73,7 +20,7 @@ router
       failureRedirect: "/login",
       failureFlash: true,
     }),
-    userController.login
+    wrapAsync(userController.login)
   ); // 4. Login
 
 router.get("/logout", userController.logout); // 5. Logout

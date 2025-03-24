@@ -1,4 +1,5 @@
 const User = require("../models/user.js");
+const { verifyOTP } = require("../controllers/otpService");
 
 // 1. SignUp Form
 module.exports.renderSignUpForm = (req, res) => {
@@ -6,23 +7,42 @@ module.exports.renderSignUpForm = (req, res) => {
 };
 
 // 2. SignUp
-module.exports.signup = async (req, res) => {
+module.exports.signup = async (req, res, next) => {
   try {
-    let { username, email, password } = req.body;
-    const newUser = new User({ email, username });
-    const registerdUser = await User.register(newUser, password);
-    console.log(registerdUser);
-    req.login(registerdUser, (err) => {
-      // Login with signUp
-      if (err) {
-        return next(err);
-      }
-      req.flash("success", "WellCome To WanderLust!");
-      res.redirect("/listings");
+    let { username, email, password, otp } = req.body;
+
+    // Verify OTP
+    const otpResult = verifyOTP(email, otp);
+    if (!otpResult.success) {
+      return res.json({ success: false, message: "Invalid OTP! Try again." });
+    }
+
+    console.log("OTP Verified. Proceeding with signUp");
+
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.json({ success: false, message: "Email already in use!" });
+    }
+
+    // Register the user in MongoDB
+    const newUser = new User({ username, email });
+    const registeredUser = await User.register(newUser, password);
+    console.log("User Registered:", registeredUser);
+
+    // Auto-login the user after signup
+    req.login(registeredUser, (err) => {
+      if (err) return next(err);
+      console.log("User logged in. Redirecting...");
+      res.json({
+        success: true,
+        message: "SignUp successful!",
+        redirectUrl: "/listings",
+      });
     });
   } catch (e) {
-    req.flash("error", e.message);
-    res.redirect("/signup");
+    console.error("Error in SignUp:", e);
+    res.json({ success: false, message: e.message });
   }
 };
 

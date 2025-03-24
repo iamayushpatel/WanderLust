@@ -116,6 +116,28 @@ app.get("/", (req, res) => {
   res.redirect("/listings");
 });
 
+const bodyParser = require("body-parser");
+const { sendOTP, verifyOTP } = require("./controllers/otpService");
+
+app.use(bodyParser.json());
+
+// Route to send OTP
+app.post("/send-otp", async (req, res) => {
+  const { email } = req.body;
+  if (!email)
+    return res.json({ success: false, message: "Email is required." });
+
+  const result = await sendOTP(email);
+  res.json(result);
+});
+
+// Route to verify OTP (Before allowing signup)
+app.post("/verify-otp", (req, res) => {
+  const { email, otp } = req.body;
+  const result = verifyOTP(email, otp);
+  res.json(result);
+});
+
 // npm install razorpay
 // npm install passport-google-oauth20
 
@@ -124,9 +146,9 @@ app.use("/", paymentRoute);
 app.use("/auth/google", googleRoute);
 
 app.use((req, res, next) => {
+  res.locals.currUser = req.user || null; // ✅ Ensure `currUser` is available globally
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  res.locals.currUser = req.user;
   next();
 });
 

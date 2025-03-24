@@ -10,15 +10,54 @@
       width: 66.66666667%;
     }
   }
+
+  .otp-container {
+    display: none;
+    margin-top: 10px;
+  }
+
+  .btn-dark {
+    margin-top: 10px;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  .btn-send-otp,
+  .btn-verify-otp {
+    background-color: #212529;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+  .btn-send-otp:hover,
+  .btn-verify-otp:hover {
+    background-color: #424649;
+  }
 </style>
 
 <div class="row mt-3">
-  <h3 class="col-6 offset-3">SignUp on WanderLust</h3>
+  <div id="flash-message" class="alert" style="display: none"></div>
+  <h3 class="col-6 offset-3">Sign Up on WanderLust</h3>
   <br />
   <div class="col-6 offset-3">
-    <form action="/signup" method="POST" class="needs-validation" novalidate>
+    <form
+      id="signup-form"
+      action="/signup"
+      method="POST"
+      class="needs-validation"
+      novalidate
+    >
+      <!-- Username -->
       <div class="mb-3">
-        <lable for="username" class="form-label"><b>Username</b></lable>
+        <label for="username" class="form-label"><b>Username</b></label>
         <input
           type="text"
           name="username"
@@ -27,41 +66,87 @@
           required
           placeholder="Enter username"
         />
-        <div class="valid-feedback">Looks good!</div>
       </div>
+
+      <!-- Email with Send OTP Button -->
       <div class="mb-3">
-        <lable for="email" class="form-label"><b>E-mail</b></lable>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          class="form-control"
-          required
-          placeholder="Enter email"
-        />
+        <label for="email" class="form-label"><b>Email</b></label>
+        <div class="input-group">
+          <input
+            type="email"
+            name="email"
+            id="email"
+            class="form-control"
+            required
+            placeholder="Enter email"
+          />
+          <button type="button" class="btn-send-otp" onclick="sendOTP()">
+            Send OTP
+          </button>
+        </div>
+        <div class="error-message" id="email-error"></div>
       </div>
+
+      <!-- OTP Input Field with Verify OTP Button -->
+      <div class="otp-container mb-3" id="otp-section">
+        <label for="otp" class="form-label"><b>Enter OTP</b></label>
+        <div class="input-group">
+          <input
+            type="text"
+            name="otp"
+            id="otp"
+            class="form-control"
+            required
+            placeholder="Enter OTP"
+          />
+          <button type="button" class="btn-verify-otp" onclick="verifyOTP()">
+            Verify OTP
+          </button>
+        </div>
+        <div class="error-message" id="otp-error"></div>
+      </div>
+
+      <!-- Password -->
       <div class="mb-3">
-        <lable for="password" class="form-label"><b>Password</b></lable>
+        <label for="password" class="form-label"><b>Password</b></label>
         <input
           type="password"
           name="password"
-          id="pass"
+          id="password"
           class="form-control"
           required
           placeholder="Enter password"
+          onkeyup="validatePassword()"
         />
-        <div class="valid-feedback">Looks strongs!</div>
+        <div class="error-message" id="password-error"></div>
       </div>
-      <button class="btn add-btn btn-dark">SignUp</button>
+
+      <!-- Hidden input to track OTP verification -->
+      <input type="hidden" id="otp-verified" value="false" />
+
+      <!-- Sign Up Button (Initially Hidden) -->
+      <button
+        type="submit"
+        id="signup-btn"
+        class="btn btn-dark add-btn"
+        style="display: none"
+        onclick="handleSignup(event)"
+      >
+        Sign Up
+      </button>
     </form>
-    <div style="margin-top: 10px" id="account">
+
+    <!-- Already have an account? -->
+    <div style="margin-top: 10px">
       <p>
         <b>Already have an account?</b>&nbsp;&nbsp;&nbsp;<a href="/login"
           ><b>Login</b></a
         >
       </p>
     </div>
-    <div class="googleoauth">
+
+    <!-- Google OAuth Signup -->
+    <div class="googleoauth mb-3">
       <button>
         <a href="/auth/google"
           ><img src="/icon/google-login.jpg" /> &nbsp;SignUp with Google</a
@@ -70,3 +155,126 @@
     </div>
   </div>
 </div>
+
+<script>
+  function showFlashMessage(type, message) {
+    let flashDiv = document.getElementById("flash-message");
+
+    if (!flashDiv) {
+      console.error("Flash message element not found!");
+      return;
+    }
+
+    flashDiv.className = `alert alert-${type} align-items-center mt-1 col-6 offset-3`;
+    flashDiv.innerText = message;
+    flashDiv.style.display = "block";
+
+    setTimeout(() => {
+      flashDiv.style.display = "none";
+    }, 3000);
+  }
+
+  function sendOTP() {
+    let email = document.getElementById("email").value;
+
+    if (!email) {
+      showFlashMessage("danger", "Please enter an Email first.");
+      return;
+    }
+
+    fetch("/send-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          showFlashMessage("success", "OTP sent to your Email.");
+          document.getElementById("otp-section").style.display = "block";
+        } else {
+          showFlashMessage("danger", data.message);
+        }
+      });
+  }
+
+  function verifyOTP() {
+    let email = document.getElementById("email").value;
+    let otp = document.getElementById("otp").value;
+
+    console.log(`Entered OTP: ${otp}`);
+
+    fetch("/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, otp }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          showFlashMessage("success", "OTP Verified!");
+          document.getElementById("otp-verified").value = "true";
+          document.getElementById("signup-btn").style.display = "block";
+        } else {
+          showFlashMessage("danger", "Invalid OTP! Please try again.");
+        }
+      });
+  }
+</script>
+
+<script>
+  function validatePassword() {
+    let password = document.getElementById("password").value;
+    let passwordError = document.getElementById("password-error");
+
+    const passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      passwordError.innerText =
+        "Password must be at least 8 characters long and include a special character (!@#$%^&*).";
+      return false;
+    } else {
+      passwordError.innerText = "";
+      return true;
+    }
+  }
+
+  function handleSignup(event) {
+    event.preventDefault();
+
+    let otpVerified = document.getElementById("otp-verified").value;
+    if (otpVerified !== "true") {
+      showFlashMessage("warning", "Please verify OTP before signing up.");
+      return;
+    }
+
+    fetch("/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: document.getElementById("username").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        otp: document.getElementById("otp").value,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("🔥 Signup Server Response:", data); // Debugging
+
+        if (data.success) {
+          showFlashMessage("success", "Signup successful! Redirecting...");
+
+          setTimeout(() => {
+            window.location.href = "/listings"; // ✅ Redirecting to Listings Page
+          }, 1500);
+        } else {
+          showFlashMessage("danger", data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("❌ Fetch error:", error);
+        showFlashMessage("danger", "An error occurred. Please try again.");
+      });
+  }
+</script>

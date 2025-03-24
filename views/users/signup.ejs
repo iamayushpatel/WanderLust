@@ -244,7 +244,7 @@
 
     let otpVerified = document.getElementById("otp-verified").value;
     if (otpVerified !== "true") {
-      showFlashMessage("warning", "Please verify OTP before signing up.");
+      showFlashMessage("warning", "Please verify OTP before SignUp.");
       return;
     }
 
@@ -263,7 +263,7 @@
         console.log("🔥 Signup Server Response:", data); // Debugging
 
         if (data.success) {
-          showFlashMessage("success", "Signup successful! Redirecting...");
+          showFlashMessage("success", "SignUp successful!");
 
           setTimeout(() => {
             window.location.href = "/listings"; // ✅ Redirecting to Listings Page

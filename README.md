@@ -20,9 +20,9 @@ Check out the live version of WanderLust listings: [WanderLust Listings](https:/
 ✅ CRUD Operations – Add, Edit, and Delete Listings.\
 ✅ User Authentication – Login, Logout, and User Profile Section.\
 ✅ User Data Security – Password Hashing and Encryption.\
-✅ User Reviews & Ratings – Get insights from past travelers before booking.\ 
+✅ User Reviews & Ratings – Get insights from past travelers before booking.\
 ✅ Host Dashboard – Easily manage listings and bookings.\
-✅ Interactive Map – Discover rentals visually on a map.\
+✅ Interactive Map – Discover rentals visually on a map.
 
 ## 🛠 Tech Stack
 

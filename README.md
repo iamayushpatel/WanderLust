@@ -12,8 +12,6 @@ With the growing demand for short-term rentals, we built WanderLust to simplify 
 
 Check out the live version of WanderLust listings: [WanderLust Listings](https://wanderlust-hl3w.onrender.com/listings)
 
----
-
 ## ✨ Key Features
 
 ✅ Diverse Listings – Find stays across cities, beaches, mountains, and more. 
@@ -26,8 +24,6 @@ Check out the live version of WanderLust listings: [WanderLust Listings](https:/
 ✅ Host Dashboard – Easily manage listings and bookings. 
 ✅ Interactive Map – Discover rentals visually on a map.
 
----
-
 ## 🛠 Tech Stack
 
 💻 **Backend**: Node.js, Express.js, MongoDB, Mongoose\
@@ -39,10 +35,7 @@ Check out the live version of WanderLust listings: [WanderLust Listings](https:/
 🗺️ **Maps & Location**: Leaflet.js for interactive maps, Leaflet Control Geocoder for geolocation services\
 ⚙️ **Utilities**: Joi (Validation), Nodemailer (Emails), Axios (API Calls), Method-Override
 
----
-
 ## 🚀 More Features Coming Soon!
 
 Let me know your thoughts!\
 \#TravelTech #VacationRentals #WebDevelopment #WanderLust #StayAnywhere
-

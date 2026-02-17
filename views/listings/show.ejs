@@ -102,128 +102,249 @@
     </form>
   </div>
   <% } %>
+  <style>
+  /* Payment form container */
+  .pay-form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 450px;
+    margin: 20px auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  /* Date inputs */
+  .pay-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+
+  .pay-form input[type="date"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .pay-form input[type="date"]:focus {
+    border-color: #3399cc;
+    box-shadow: 0 0 5px rgba(51, 153, 204, 0.5);
+    outline: none;
+  }
+
+  /* Total price display */
+  .pay-form h4 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  #totalPrice {
+    font-weight: bold;
+    color: #e74c3c; /* standout red */
+  }
+
+  /* Book Now button */
+  .pay-form button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: #3399cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  .pay-form button:hover {
+    background-color: #267aa3;
+    transform: translateY(-2px);
+  }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    .pay-form {
+      padding: 15px;
+    }
+    .pay-form h4 {
+      font-size: 1rem;
+    }
+  }
+</style>
+
 
   <!-- Payment Gateway -->
   <div>
-    <% if(currUser && listing.owner._id.equals(currUser ._id)) { %>
-    <!-- Do not display the button for the listing owner -->
+    <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
+    <!-- Owner cannot book -->
     <% } else { %>
-    <form class="pay-form">
+
+    <form
+      action="/listings/<%= listing._id %>/book"
+      method="POST"
+      class="pay-form"
+    >
+      <div>
+        <label>Check-in</label>
+        <input type="date" id="checkIn" name="checkIn" required />
+      </div>
+
+      <div>
+        <label>Check-out</label>
+        <input type="date" id="checkOut" name="checkOut" required />
+      </div>
+
+      <h4>Total: ₹<span id="totalPrice">0</span></h4>
+
+      <!-- Hidden input for total amount -->
+      <input type="hidden" name="amount" id="finalAmount" />
+
       <input type="hidden" name="name" value="<%= listing.title %>" />
-      <input type="hidden" name="amount" value="<%= listing.price %>" />
       <input
         type="hidden"
         name="description"
         value="<%= listing.description %>"
       />
-      <button id="booking-btn" class="btn btn-dark mx-auto">Book Now !</button>
+
+      <button type="submit" id="booking-btn" class="btn btn-dark mx-auto">
+        Book Now !
+      </button>
     </form>
+
+    <script>
+      const pricePerNight = <%= listing.price %>;
+      const checkIn = document.getElementById("checkIn");
+      const checkOut = document.getElementById("checkOut");
+      const totalPrice = document.getElementById("totalPrice");
+      const finalAmountInput = document.getElementById("finalAmount");
+
+      function updateTotal() {
+        const start = new Date(checkIn.value);
+        const end = new Date(checkOut.value);
+
+        if (checkIn.value && checkOut.value && end > start) {
+          const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+          const total = diffDays * pricePerNight;
+
+          totalPrice.textContent = total.toLocaleString("en-IN");
+          finalAmountInput.value = total;
+        } else {
+          totalPrice.textContent = "0";
+          finalAmountInput.value = "";
+        }
+      }
+
+      checkIn.addEventListener("change", updateTotal);
+      checkOut.addEventListener("change", updateTotal);
+    </script>
+
     <% } %>
   </div>
 
   <!-- Razorpay Script -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script>
-    document
-      .getElementById("booking-btn")
-      .addEventListener("click", async function (event) {
-        event.preventDefault(); // Prevent default form submission behavior
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  document.getElementById("booking-btn").addEventListener("click", async function (event) {
+    event.preventDefault(); // Prevent default form submission
 
-        // Check if the user is logged in
-        const isLoggedIn = <%= currUser  ? 'true' : 'false' %>;
+    // Check if the user is logged in
+    const isLoggedIn = <%= currUser ? 'true' : 'false' %>;
+    if (!isLoggedIn) {
+      window.location.href = "/login";
+      return;
+    }
 
-        if (!isLoggedIn) {
-          // Redirect to the login page if the user is not logged in
-          window.location.href = "/login"; // Change this to your actual login route
-          return;
-        }
+    // Get the calculated total amount from hidden input
+    const amountInput = document.getElementById("finalAmount");
+    const totalAmount = parseInt(amountInput.value);
+    if (!totalAmount || totalAmount <= 0) {
+      alert("Please select valid check-in and check-out dates.");
+      return;
+    }
 
-        sessionStorage.setItem("razorpayTriggered", "true"); // Mark Razorpay as triggered
+    sessionStorage.setItem("razorpayTriggered", "true");
 
-        const listingId = "<%= listing._id %>";
-        const name = "<%= listing.title %>";
-        const amount = "<%= listing.price %>";
-        const description = "<%= listing.description %>";
+    const listingId = "<%= listing._id %>";
+    const name = "<%= listing.title %>";
+    const description = "<%= listing.description %>";
 
-        console.log("Sending data to backend:", {
-          listingId,
-          name,
-          amount,
-          description,
-        });
+    console.log("Sending data to backend:", {
+      listingId,
+      name,
+      amount: totalAmount,
+      description,
+    });
 
-        try {
-          const response = await fetch("/createOrder", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ listingId, name, amount, description }),
-          });
-
-          const orderData = await response.json();
-          console.log("Received order response:", orderData);
-
-          if (!orderData.success) {
-            alert("Error creating order. Please try again.");
-            return;
-          }
-
-          const options = {
-            key: orderData.key_id,
-            amount: orderData.amount,
-            currency: "INR",
-            name: orderData.product_name,
-            description: orderData.description,
-            order_id: orderData.order_id,
-            handler: function (response) {
-              alert(
-                "Payment Successful! Payment ID: " +
-                  response.razorpay_payment_id
-              );
-              sessionStorage.removeItem("razorpayTriggered"); // Remove flag after success
-              window.location.href = "/payment-success";
-            },
-            prefill: {
-              name: orderData.name,
-              email: orderData.email,
-              contact: orderData.contact,
-            },
-            theme: { color: "#3399cc" },
-          };
-
-          console.log("Opening Razorpay with options:", options);
-          const rzp = new Razorpay(options);
-
-          rzp.on("payment.failed", function (response) {
-            console.error("Payment failed:", response.error);
-            alert("Payment failed. Try again.");
-            sessionStorage.removeItem("razorpayTriggered"); // Remove flag on failure
-          });
-
-          rzp.open();
-        } catch (error) {
-          console.error("Error in booking:", error);
-          alert("An error occurred. Please try again.");
-          sessionStorage.removeItem("razorpayTriggered"); // Remove flag on error
-        }
+    try {
+      const response = await fetch("/createOrder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ listingId, name, amount: totalAmount, description }),
       });
 
-    // Fix: Completely Prevent Razorpay from Reopening on Back Button
-    window.onload = function () {
-      if (sessionStorage.getItem("razorpayTriggered") === "true") {
-        console.log(
-          "Back button detected, preventing Razorpay from reopening..."
-        );
-        sessionStorage.removeItem("razorpayTriggered");
-        history.replaceState(null, "", location.href); // Modify history to prevent back trigger
-      }
-    };
+      const orderData = await response.json();
+      console.log("Received order response:", orderData);
 
-    // Fix: Force Reload on Back Button to Reset Page State
-    window.addEventListener("popstate", function () {
-      console.log("Back button pressed, reloading page to reset state...");
+      if (!orderData.success) {
+        alert("Error creating order. Please try again.");
+        return;
+      }
+
+      const options = {
+        key: orderData.key_id,
+        amount: orderData.amount, // amount from backend in paise
+        currency: "INR",
+        name: orderData.product_name,
+        description: orderData.description,
+        order_id: orderData.order_id,
+        handler: function (response) {
+          alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+          sessionStorage.removeItem("razorpayTriggered");
+          window.location.href = "/payment-success";
+        },
+        prefill: {
+          name: orderData.name,
+          email: orderData.email,
+          contact: orderData.contact,
+        },
+        theme: { color: "#3399cc" },
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.on("payment.failed", function (response) {
+        console.error("Payment failed:", response.error);
+        alert("Payment failed. Try again.");
+        sessionStorage.removeItem("razorpayTriggered");
+      });
+
+      rzp.open();
+    } catch (error) {
+      console.error("Error in booking:", error);
+      alert("An error occurred. Please try again.");
       sessionStorage.removeItem("razorpayTriggered");
-      location.reload(); // Fully reload the page to prevent Razorpay from reopening
-    });
+    }
+  });
+
+  // Prevent Razorpay from reopening on back button
+  window.onload = function () {
+    if (sessionStorage.getItem("razorpayTriggered") === "true") {
+      sessionStorage.removeItem("razorpayTriggered");
+      history.replaceState(null, "", location.href);
+    }
+  };
+
+  window.addEventListener("popstate", function () {
+    sessionStorage.removeItem("razorpayTriggered");
+    location.reload();
+  });
+</script>
   </script>
   <!-- Offers --->
   <div class="col-8 offset-2 mb-3 mt-3">
